@@ -11,7 +11,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
         (function() {
-            emailjs.init("YOUR_PUBLIC_KEY_HERE");
+            // PASTE YOUR PUBLIC KEY HERE (from EmailJS -> Account):
+            emailjs.init("ZeisZd0YHSWp_cBTv");
         })();
     </script>
     <style>
@@ -589,16 +590,15 @@
         };
 
         try {
-            await emailjs.send('YOUR_SERVICE_ID_HERE', 'YOUR_TEMPLATE_ID_HERE', templateParams);
+            // PASTE YOUR TEMPLATE ID HERE:
+            await emailjs.send('service_zys0ikc', 'template_3tjd2u5', templateParams);
             alert(`otp sent to ${email}! check your inbox or spam folder.`);
             
             document.getElementById('obStep1').style.display = 'none';
             document.getElementById('obStep2').style.display = 'block';
         } catch (error) {
             console.error('EmailJS Error:', error);
-            alert(`[DEV MODE TEST] Your OTP code is: ${generatedOTP}`);
-            document.getElementById('obStep1').style.display = 'none';
-            document.getElementById('obStep2').style.display = 'block';
+            alert('failed to send email! check your emailjs template id / public key.');
         } finally {
             btn.innerText = 'send otp code';
             btn.disabled = false;
