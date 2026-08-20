@@ -21,6 +21,7 @@
             --white: #ffffff;
             --gray: #1a1a1a;
             --light-gray: #2a2a2a;
+            --red: #ff3333;
         }
 
         * {
@@ -209,12 +210,28 @@
             line-height: 1.1;
         }
 
+        .card-badges {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
         .card-tag {
             background: var(--brat-green);
             color: var(--black);
             font-size: 0.7rem;
             font-weight: 900;
             padding: 2px 6px;
+        }
+
+        .btn-delete-card {
+            background: var(--red);
+            color: var(--white);
+            border: none;
+            font-size: 0.7rem;
+            font-weight: 900;
+            padding: 2px 6px;
+            cursor: pointer;
         }
 
         .card-meta {
@@ -417,7 +434,7 @@
     <div class="feed" id="questFeed"></div>
 </div>
 
-<!-- Onboarding Modal with OTP Step -->
+<!-- Onboarding Modal -->
 <div class="modal-overlay" id="onboardingModal">
     <div class="modal">
         <button type="button" class="modal-close" onclick="closeOnboarding()">✕</button>
@@ -426,7 +443,6 @@
             christ uni access only // verify once to view details, post & join quests.
         </div>
 
-        <!-- STEP 1: Details -->
         <div id="obStep1">
             <div class="input-group">
                 <label>your name / handle</label>
@@ -454,7 +470,6 @@
             <button class="btn-main" style="background: var(--brat-green); color: var(--black); margin-top: 15px;" id="sendOtpBtn" onclick="sendOTP()">send otp code</button>
         </div>
 
-        <!-- STEP 2: OTP Entry -->
         <div id="obStep2" style="display: none;">
             <div class="input-group">
                 <label>enter 6-digit otp sent to your email</label>
@@ -489,6 +504,7 @@
             <div class="modal-val" id="mSlots" style="color: var(--brat-green);"></div>
         </div>
         <button class="btn-main" id="mJoinBtn" style="background: var(--brat-green); color: var(--black); margin-top: 10px;">i'm down</button>
+        <button class="btn-main" id="mDeleteBtn" style="background: var(--red); color: var(--white); margin-top: 8px; display: none;">delete quest</button>
     </div>
 </div>
 
@@ -505,7 +521,6 @@
 
     firebase.initializeApp(firebaseConfig);
     
-    // Connects to default native Firestore database
     const db = firebase.firestore();
     const questsRef = db.collection("sidequests");
 
@@ -635,12 +650,17 @@
 
     questsRef.onSnapshot((snapshot) => {
         quests = [];
+        const myEmail = (localStorage.getItem('sq_user_email') || '').toLowerCase();
+
         snapshot.forEach((doc) => {
             const data = doc.data();
+            const isOwner = data.createdBy === myUserId || (data.userEmail && data.userEmail.toLowerCase() === myEmail);
+
             quests.push({
                 id: doc.id,
                 ...data,
-                joinedByMe: Array.isArray(data.joinedUsers) && data.joinedUsers.includes(myUserId)
+                joinedByMe: Array.isArray(data.joinedUsers) && data.joinedUsers.includes(myUserId),
+                isMyQuest: isOwner
             });
         });
         renderFeed();
@@ -713,7 +733,10 @@
                 <div class="card" onclick="openModal('${q.id}')">
                     <div class="card-header">
                         <div class="card-title">${q.title}</div>
-                        <span class="card-tag">${q.cat}</span>
+                        <div class="card-badges">
+                            <span class="card-tag">${q.cat}</span>
+                            ${q.isMyQuest ? `<button class="btn-delete-card" onclick="event.stopPropagation(); deleteQuest('${q.id}')">🗑️ delete</button>` : ''}
+                        </div>
                     </div>
                     <div class="card-meta">
                         <span class="card-time-badge">🕒 ${q.time}</span>
@@ -747,6 +770,14 @@
         joinBtn.innerText = q.joinedByMe ? "you're down ✓ (tap to leave)" : "i'm down";
         joinBtn.style.background = q.joinedByMe ? "#ffffff" : "var(--brat-green)";
         joinBtn.onclick = () => { toggleJoinQuest(q.id); closeModal(); };
+
+        const deleteBtn = document.getElementById('mDeleteBtn');
+        if (q.isMyQuest) {
+            deleteBtn.style.display = 'block';
+            deleteBtn.onclick = () => deleteQuest(q.id);
+        } else {
+            deleteBtn.style.display = 'none';
+        }
 
         document.getElementById('detailModal').style.display = 'flex';
     }
@@ -806,13 +837,11 @@
 
         const displayTime = `${dayPrefix}${formatTime12hr(timeInput)}`;
 
-        // Instantly hide form & clear fields
         document.getElementById('questForm').style.display = 'none';
         document.getElementById('questTitle').value = '';
         document.getElementById('questLoc').value = '';
         document.getElementById('questDeets').value = '';
 
-        // Save to Database in background
         try {
             await questsRef.add({
                 title: title.toLowerCase(),
@@ -826,11 +855,23 @@
                 host: hostInput.toLowerCase(),
                 userEmail: localStorage.getItem('sq_user_email') || '',
                 campus: localStorage.getItem('sq_user_campus') || '',
+                createdBy: myUserId,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
         } catch (err) {
             console.error("Publishing error:", err);
             alert(`Failed to sync to database: ${err.message}`);
+        }
+    }
+
+    async function deleteQuest(id) {
+        if (!confirm('are you sure you want to delete this sidequest?')) return;
+        try {
+            await questsRef.doc(id).delete();
+            closeModal();
+        } catch (err) {
+            console.error("Delete error:", err);
+            alert(`failed to delete: ${err.message}`);
         }
     }
 
