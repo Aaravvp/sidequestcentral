@@ -493,14 +493,14 @@
 </div>
 
 <script>
+    // FIREBASE CONFIG
     const firebaseConfig = {
-        apiKey: "AIzaSyDSh3SBYbK1OHTnU05aVRBL-DqcqX6HeOI",
-        authDomain: "side-quest-b4cd8.firebaseapp.com",
-        projectId: "side-quest-b4cd8",
-        storageBucket: "side-quest-b4cd8.firebasestorage.app",
-        messagingSenderId: "438055949671",
-        appId: "1:438055949671:web:6f097348437a1e3fef8bc2",
-        measurementId: "G-25XTGYVQ8X"
+        apiKey: "AIzaSyDCQmIYiXHrB7etNeGE9FF0MioWNBe8lTg",
+        authDomain: "yawr-87344.firebaseapp.com",
+        projectId: "yawr-87344",
+        storageBucket: "yawr-87344.firebasestorage.app",
+        messagingSenderId: "501852054054",
+        appId: "1:501852054054:web:be39ee4f40a6e035d53ce7"
     };
 
     firebase.initializeApp(firebaseConfig);
@@ -662,18 +662,6 @@
             if (!isNaN(dateObj.getTime())) return dateObj;
         }
         return new Date(2099, 11, 31);
-    }
-
-    function checkScheduleClash(targetTimestamp) {
-        const targetTime = targetTimestamp.getTime();
-        const duration = 90 * 60 * 1000;
-        for (let q of quests) {
-            if (q.joinedByMe) {
-                const qTime = getQuestTimestamp(q).getTime();
-                if (Math.abs(targetTime - qTime) < duration) return q;
-            }
-        }
-        return null;
     }
 
     function setDefaultFormDate() {
