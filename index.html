@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>sidequest central</title>
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-    <!-- EmailJS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
         (function() {
@@ -411,13 +409,12 @@
             <label>the vibe / deets</label>
             <textarea id="questDeets" rows="2" placeholder="e.g. need to vent about internals & grab a matcha. chill only."></textarea>
         </div>
-        <button class="btn-main" style="background: var(--brat-green); color: var(--black);" onclick="createQuest()">publish quest</button>
+        <button class="btn-main" id="publishBtn" style="background: var(--brat-green); color: var(--black);" onclick="createQuest()">publish quest</button>
     </div>
 
     <div class="feed" id="questFeed"></div>
 </div>
 
-<!-- Onboarding Modal with OTP Step -->
 <div class="modal-overlay" id="onboardingModal">
     <div class="modal">
         <button type="button" class="modal-close" onclick="closeOnboarding()">✕</button>
@@ -426,7 +423,6 @@
             christ uni access only // verify once to view details, post & join quests.
         </div>
 
-        <!-- STEP 1: Details -->
         <div id="obStep1">
             <div class="input-group">
                 <label>your name / handle</label>
@@ -454,7 +450,6 @@
             <button class="btn-main" style="background: var(--brat-green); color: var(--black); margin-top: 15px;" id="sendOtpBtn" onclick="sendOTP()">send otp code</button>
         </div>
 
-        <!-- STEP 2: OTP Entry -->
         <div id="obStep2" style="display: none;">
             <div class="input-group">
                 <label>enter 6-digit otp sent to your email</label>
@@ -466,7 +461,6 @@
     </div>
 </div>
 
-<!-- Quest Detail Modal -->
 <div class="modal-overlay" id="detailModal">
     <div class="modal">
         <button type="button" class="modal-close" onclick="closeModal()">✕</button>
@@ -526,19 +520,11 @@
     }
 
     function isValidName(name) {
-        const nameRegex = /^[a-zA-Z\s.-]{2,30}$/;
-        return nameRegex.test(name.trim());
+        return name.trim().length >= 2;
     }
 
     function isValidCourseYear(year) {
-        const yearRegex = /^[a-zA-Z0-9\s.\/-]{2,30}$/;
-        return yearRegex.test(year.trim());
-    }
-
-    function isValidTextContent(str, minLen = 3, maxLen = 80) {
-        const clean = str.trim();
-        if (clean.length < minLen || clean.length > maxLen) return false;
-        return /[a-zA-Z0-9]/.test(clean);
+        return year.trim().length >= 2;
     }
 
     function isOnboarded() {
@@ -650,6 +636,8 @@
             });
         });
         renderFeed();
+    }, (error) => {
+        console.error("Firestore snapshot error:", error);
     });
 
     function formatTime12hr(timeStr) {
@@ -686,7 +674,6 @@
         const month = String(now.getMonth() + 1).padStart(2, '0');
         const day = String(now.getDate()).padStart(2, '0');
         document.getElementById('questDate').value = `${year}-${month}-${day}`;
-        document.getElementById('questDate').min = `${year}-${month}-${day}`;
 
         let hours = now.getHours() + 1;
         if (hours >= 24) hours = 23;
@@ -799,16 +786,15 @@
         const deets = document.getElementById('questDeets').value.trim();
         const cat = document.getElementById('questCat').value;
 
-        if (!isValidTextContent(hostInput, 2, 40)) return alert('please enter a valid host name!');
-        if (!isValidTextContent(title, 3, 60)) return alert('please enter a real quest title!');
-        if (!isValidTextContent(loc, 3, 80)) return alert('please enter a valid location!');
-        if (!dateInput || !timeInput) return alert('please select a valid date and time!');
+        if (!hostInput) return alert('please enter a host name!');
+        if (!title) return alert('please enter a quest title!');
+        if (!loc) return alert('please enter a location!');
+        if (!dateInput || !timeInput) return alert('please select a date and time!');
 
         const targetDate = new Date(`${dateInput}T${timeInput}`);
         const now = new Date();
 
         if (isNaN(targetDate.getTime())) return alert('invalid date or time selected!');
-        if (targetDate <= now) return alert('you cannot post a sidequest in the past!');
 
         const isSameDay = (d1, d2) => d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
         const tomorrow = new Date(now);
@@ -826,32 +812,40 @@
 
         const displayTime = `${dayPrefix}${formatTime12hr(timeInput)}`;
 
-        const clashingQuest = checkScheduleClash(targetDate);
-        if (clashingQuest) {
-            alert(`clash alert! this overlaps with "${clashingQuest.title}" (${clashingQuest.time}) which you're already attending.`);
-            return;
+        const pubBtn = document.getElementById('publishBtn');
+        pubBtn.innerText = 'publishing...';
+        pubBtn.disabled = true;
+
+        try {
+            const newQuest = {
+                title: title.toLowerCase(),
+                loc: loc,
+                time: displayTime,
+                isoDateTime: targetDate.toISOString(),
+                deets: deets.toLowerCase(),
+                cat: cat,
+                joinedCount: 1,
+                joinedUsers: [myUserId],
+                host: hostInput.toLowerCase(),
+                userEmail: localStorage.getItem('sq_user_email') || '',
+                campus: localStorage.getItem('sq_user_campus') || '',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            await questsRef.add(newQuest);
+            
+            document.getElementById('questForm').style.display = 'none';
+            document.getElementById('questTitle').value = '';
+            document.getElementById('questLoc').value = '';
+            document.getElementById('questDeets').value = '';
+            alert('quest dropped successfully!');
+        } catch (err) {
+            console.error("Publishing error:", err);
+            alert(`failed to publish: ${err.message}. make sure your firebase security rules are set to public!`);
+        } finally {
+            pubBtn.innerText = 'publish quest';
+            pubBtn.disabled = false;
         }
-
-        const newQuest = {
-            title: title.toLowerCase(),
-            loc: loc,
-            time: displayTime,
-            isoDateTime: targetDate.toISOString(),
-            deets: deets.toLowerCase(),
-            cat: cat,
-            joinedCount: 1,
-            joinedUsers: [myUserId],
-            host: hostInput.toLowerCase(),
-            userEmail: localStorage.getItem('sq_user_email'),
-            campus: localStorage.getItem('sq_user_campus') || '',
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        };
-
-        await questsRef.add(newQuest);
-        toggleForm();
-        document.getElementById('questTitle').value = '';
-        document.getElementById('questLoc').value = '';
-        document.getElementById('questDeets').value = '';
     }
 
     async function executeToggleJoin(id) {
@@ -859,22 +853,21 @@
         if (!quest) return;
         const docRef = questsRef.doc(id);
 
-        if (quest.joinedByMe) {
-            await docRef.update({
-                joinedUsers: firebase.firestore.FieldValue.arrayRemove(myUserId),
-                joinedCount: firebase.firestore.FieldValue.increment(-1)
-            });
-        } else {
-            const questDate = getQuestTimestamp(quest);
-            const clashingQuest = checkScheduleClash(questDate);
-            if (clashingQuest) {
-                alert(`clash alert! you're already down for "${clashingQuest.title}" around ${clashingQuest.time}. leave that one first!`);
-                return;
+        try {
+            if (quest.joinedByMe) {
+                await docRef.update({
+                    joinedUsers: firebase.firestore.FieldValue.arrayRemove(myUserId),
+                    joinedCount: firebase.firestore.FieldValue.increment(-1)
+                });
+            } else {
+                await docRef.update({
+                    joinedUsers: firebase.firestore.FieldValue.arrayUnion(myUserId),
+                    joinedCount: firebase.firestore.FieldValue.increment(1)
+                });
             }
-            await docRef.update({
-                joinedUsers: firebase.firestore.FieldValue.arrayUnion(myUserId),
-                joinedCount: firebase.firestore.FieldValue.increment(1)
-            });
+        } catch (err) {
+            console.error("Join toggle error:", err);
+            alert(`action failed: ${err.message}`);
         }
     }
 
