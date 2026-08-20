@@ -505,8 +505,8 @@
 
     firebase.initializeApp(firebaseConfig);
     
-    // Explicitly target your custom database 'sidequestcentral'
-    const db = firebase.app().firestore("sidequestcentral");
+    // Connects to default native Firestore database
+    const db = firebase.firestore();
     const questsRef = db.collection("sidequests");
 
     let myUserId = localStorage.getItem('sq_user_id');
