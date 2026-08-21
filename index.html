@@ -17,12 +17,12 @@
     </script>
     <style>
         :root {
-            --brat-green: #8ACE00;
-            --black: #000000;
+            --vanilla-cream: #F0E7D5;
+            --midnight-indigo: #212842;
+            --indigo-light: #2c3555;
+            --indigo-dark: #171c2f;
             --white: #ffffff;
-            --gray: #1a1a1a;
-            --light-gray: #2a2a2a;
-            --red: #ff3333;
+            --red: #ff4d4d;
         }
 
         * {
@@ -34,8 +34,8 @@
         }
 
         body {
-            background-color: var(--brat-green);
-            color: var(--black);
+            background-color: var(--vanilla-cream);
+            color: var(--midnight-indigo);
             padding: 25px 15px;
             display: flex;
             justify-content: center;
@@ -55,13 +55,14 @@
             line-height: 0.85;
             filter: blur(0.4px);
             margin-bottom: 10px;
+            color: var(--midnight-indigo);
         }
 
         .subtitle {
             font-size: 0.9rem;
             font-weight: 800;
-            background: var(--black);
-            color: var(--brat-green);
+            background: var(--midnight-indigo);
+            color: var(--vanilla-cream);
             display: inline-block;
             padding: 4px 10px;
             letter-spacing: -0.5px;
@@ -75,8 +76,8 @@
         }
 
         .btn-main {
-            background: var(--black);
-            color: var(--brat-green);
+            background: var(--midnight-indigo);
+            color: var(--vanilla-cream);
             border: none;
             padding: 16px;
             font-size: 1.15rem;
@@ -96,7 +97,7 @@
         .filter-section-title {
             font-size: 0.75rem;
             font-weight: 900;
-            color: var(--black);
+            color: var(--midnight-indigo);
             margin-top: 4px;
         }
 
@@ -110,8 +111,8 @@
 
         .chip {
             background: transparent;
-            border: 2px solid var(--black);
-            color: var(--black);
+            border: 2px solid var(--midnight-indigo);
+            color: var(--midnight-indigo);
             padding: 5px 12px;
             font-weight: 800;
             font-size: 0.8rem;
@@ -120,29 +121,29 @@
         }
 
         .chip.active {
-            background: var(--black);
-            color: var(--brat-green);
+            background: var(--midnight-indigo);
+            color: var(--vanilla-cream);
         }
 
         .chip.day-chip.active {
             background: var(--white);
-            color: var(--black);
+            color: var(--midnight-indigo);
         }
 
         .quest-form {
             display: none;
-            background: var(--black);
-            color: var(--white);
+            background: var(--midnight-indigo);
+            color: var(--vanilla-cream);
             padding: 20px;
             margin-bottom: 25px;
-            border: 2px solid var(--black);
+            border: 2px solid var(--midnight-indigo);
             box-shadow: 6px 6px 0px var(--white);
         }
 
         .quest-form h3 {
             font-size: 1.6rem;
             font-weight: 900;
-            color: var(--brat-green);
+            color: var(--vanilla-cream);
             margin-bottom: 15px;
             filter: blur(0.3px);
         }
@@ -154,15 +155,15 @@
             font-size: 0.75rem;
             font-weight: 800;
             margin-bottom: 4px;
-            color: var(--brat-green);
+            color: var(--vanilla-cream);
         }
 
         .input-group input, .input-group select, .input-group textarea {
             width: 100%;
             padding: 10px;
-            background: var(--gray);
-            border: 1px solid #333;
-            color: var(--white);
+            background: var(--indigo-light);
+            border: 1px solid #3d4970;
+            color: var(--vanilla-cream);
             font-size: 0.9rem;
             font-weight: 700;
             outline: none;
@@ -185,10 +186,10 @@
         }
 
         .card {
-            background: var(--black);
-            color: var(--white);
+            background: var(--midnight-indigo);
+            color: var(--vanilla-cream);
             padding: 18px;
-            border: 2px solid var(--black);
+            border: 2px solid var(--midnight-indigo);
             box-shadow: 5px 5px 0px var(--white);
             cursor: pointer;
             transition: transform 0.1s;
@@ -206,7 +207,7 @@
         .card-title {
             font-size: 1.35rem;
             font-weight: 900;
-            color: var(--brat-green);
+            color: var(--vanilla-cream);
             filter: blur(0.2px);
             line-height: 1.1;
         }
@@ -218,8 +219,8 @@
         }
 
         .card-tag {
-            background: var(--brat-green);
-            color: var(--black);
+            background: var(--vanilla-cream);
+            color: var(--midnight-indigo);
             font-size: 0.7rem;
             font-weight: 900;
             padding: 2px 6px;
@@ -237,7 +238,7 @@
 
         .card-meta {
             font-size: 0.85rem;
-            color: #888;
+            color: #a3aecd;
             margin-bottom: 15px;
             display: flex;
             gap: 12px;
@@ -245,7 +246,7 @@
         }
 
         .card-time-badge {
-            color: var(--brat-green);
+            color: var(--vanilla-cream);
             font-weight: 800;
         }
 
@@ -269,19 +270,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid #222;
+            border-top: 1px solid var(--indigo-light);
             padding-top: 12px;
         }
 
         .slots {
             font-size: 0.85rem;
             font-weight: 800;
-            color: var(--brat-green);
+            color: var(--vanilla-cream);
         }
 
         .btn-join {
-            background: var(--brat-green);
-            color: var(--black);
+            background: var(--vanilla-cream);
+            color: var(--midnight-indigo);
             border: none;
             padding: 8px 14px;
             font-weight: 900;
@@ -291,15 +292,15 @@
         }
 
         .btn-join.joined {
-            background: #ffffff;
-            color: var(--black);
+            background: var(--white);
+            color: var(--midnight-indigo);
         }
 
         .modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
+            background: rgba(23, 28, 47, 0.85);
             z-index: 999;
             justify-content: center;
             align-items: center;
@@ -307,15 +308,15 @@
         }
 
         .modal {
-            background: var(--black);
-            color: var(--white);
-            border: 3px solid var(--brat-green);
+            background: var(--midnight-indigo);
+            color: var(--vanilla-cream);
+            border: 3px solid var(--vanilla-cream);
             padding: 25px;
             width: 100%;
             max-width: 480px;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 8px 8px 0px var(--brat-green);
+            box-shadow: 8px 8px 0px var(--vanilla-cream);
             position: relative;
         }
 
@@ -323,9 +324,9 @@
             position: absolute;
             top: 12px;
             right: 12px;
-            background: var(--brat-green);
-            color: var(--black);
-            border: 2px solid var(--black);
+            background: var(--vanilla-cream);
+            color: var(--midnight-indigo);
+            border: 2px solid var(--midnight-indigo);
             font-weight: 900;
             width: 36px;
             height: 36px;
@@ -341,7 +342,7 @@
         .modal-title {
             font-size: 2rem;
             font-weight: 900;
-            color: var(--brat-green);
+            color: var(--vanilla-cream);
             filter: blur(0.3px);
             margin-bottom: 10px;
             line-height: 1;
@@ -352,7 +353,7 @@
 
         .modal-label {
             font-size: 0.75rem;
-            color: #777;
+            color: #a3aecd;
             font-weight: 800;
             margin-bottom: 4px;
         }
@@ -360,14 +361,14 @@
         .modal-val {
             font-size: 1rem;
             font-weight: 700;
-            color: var(--white);
+            color: var(--vanilla-cream);
         }
 
         .maps-link {
             display: inline-block;
             margin-top: 6px;
-            background: var(--brat-green);
-            color: var(--black);
+            background: var(--vanilla-cream);
+            color: var(--midnight-indigo);
             text-decoration: none;
             padding: 8px 12px;
             font-weight: 900;
@@ -376,33 +377,34 @@
 
         /* Chatbox Styles */
         .chat-container {
-            border-top: 2px solid var(--brat-green);
+            border-top: 2px solid var(--vanilla-cream);
             padding-top: 15px;
             margin-top: 20px;
         }
 
         .chat-box {
-            background: var(--gray);
+            background: var(--indigo-dark);
             height: 160px;
             overflow-y: auto;
             padding: 10px;
             margin-bottom: 10px;
-            border: 1px solid #333;
+            border: 1px solid var(--indigo-light);
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
 
         .chat-msg {
-            background: #252525;
+            background: var(--indigo-light);
             padding: 6px 10px;
             border-radius: 4px;
             font-size: 0.85rem;
+            color: var(--vanilla-cream);
         }
 
         .chat-sender {
             font-size: 0.7rem;
-            color: var(--brat-green);
+            color: var(--vanilla-cream);
             font-weight: 900;
             margin-bottom: 2px;
         }
@@ -415,19 +417,29 @@
         .chat-input-row input {
             flex: 1;
             padding: 8px;
-            background: var(--gray);
-            border: 1px solid #333;
-            color: var(--white);
+            background: var(--indigo-dark);
+            border: 1px solid var(--indigo-light);
+            color: var(--vanilla-cream);
             font-size: 0.85rem;
         }
 
         .chat-send-btn {
-            background: var(--brat-green);
-            color: var(--black);
+            background: var(--vanilla-cream);
+            color: var(--midnight-indigo);
             border: none;
             padding: 0 15px;
             font-weight: 900;
             cursor: pointer;
+        }
+
+        .chat-locked-msg {
+            background: var(--indigo-dark);
+            border: 1px dashed var(--indigo-light);
+            padding: 15px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #a3aecd;
         }
     </style>
 </head>
@@ -503,7 +515,7 @@
             <label>the vibe / deets</label>
             <textarea id="questDeets" rows="2" placeholder="e.g. need to vent about internals & grab a matcha. chill only."></textarea>
         </div>
-        <button class="btn-main" id="publishBtn" style="background: var(--brat-green); color: var(--black);" onclick="createQuest()">publish quest</button>
+        <button class="btn-main" id="publishBtn" style="background: var(--vanilla-cream); color: var(--midnight-indigo);" onclick="createQuest()">publish quest</button>
     </div>
 
     <div class="feed" id="questFeed"></div>
@@ -514,7 +526,7 @@
     <div class="modal">
         <button type="button" class="modal-close" onclick="closeOnboarding()">✕</button>
         <div class="modal-title">welcome to sidequest</div>
-        <div style="font-size: 0.85rem; font-weight: 800; color: #888; margin-bottom: 20px;">
+        <div style="font-size: 0.85rem; font-weight: 800; color: #a3aecd; margin-bottom: 20px;">
             christ uni access only // verify once to unlock details, chat & post quests.
         </div>
 
@@ -542,7 +554,7 @@
                 <label>christ uni email (@...christuniversity.in)</label>
                 <input type="email" id="obEmail" placeholder="e.g. name@mca.christuniversity.in">
             </div>
-            <button class="btn-main" style="background: var(--brat-green); color: var(--black); margin-top: 15px;" id="sendOtpBtn" onclick="sendOTP()">send otp code</button>
+            <button class="btn-main" style="background: var(--vanilla-cream); color: var(--midnight-indigo); margin-top: 15px;" id="sendOtpBtn" onclick="sendOTP()">send otp code</button>
         </div>
 
         <div id="obStep2" style="display: none;">
@@ -550,8 +562,8 @@
                 <label>enter 6-digit otp sent to your email</label>
                 <input type="text" id="obOtpInput" maxlength="6" placeholder="e.g. 482019" style="letter-spacing: 4px; font-size: 1.2rem; text-align: center;">
             </div>
-            <button class="btn-main" style="background: var(--brat-green); color: var(--black); margin-top: 15px;" onclick="verifyOTP()">verify & unlock</button>
-            <button class="btn-main" style="background: transparent; color: #888; border: 1px solid #333; margin-top: 8px; font-size: 0.8rem;" onclick="backToStep1()">← change details</button>
+            <button class="btn-main" style="background: var(--vanilla-cream); color: var(--midnight-indigo); margin-top: 15px;" onclick="verifyOTP()">verify & unlock</button>
+            <button class="btn-main" style="background: transparent; color: #a3aecd; border: 1px solid var(--indigo-light); margin-top: 8px; font-size: 0.8rem;" onclick="backToStep1()">← change details</button>
         </div>
     </div>
 </div>
@@ -576,18 +588,25 @@
         </div>
         <div class="modal-section">
             <div class="modal-label">attendance</div>
-            <div class="modal-val" id="mSlots" style="color: var(--brat-green);"></div>
+            <div class="modal-val" id="mSlots" style="color: var(--vanilla-cream);"></div>
         </div>
-        <button class="btn-main" id="mJoinBtn" style="background: var(--brat-green); color: var(--black); margin-top: 10px;">i'm down</button>
+        <button class="btn-main" id="mJoinBtn" style="background: var(--vanilla-cream); color: var(--midnight-indigo); margin-top: 10px;">i'm down</button>
         <button class="btn-main" id="mDeleteBtn" style="background: var(--red); color: var(--white); margin-top: 8px; display: none;">delete quest</button>
 
         <!-- Live Group Chat Area -->
         <div class="chat-container">
-            <div class="modal-label" style="color: var(--brat-green);">live quest chatbox</div>
-            <div class="chat-box" id="chatBox"></div>
-            <div class="chat-input-row">
-                <input type="text" id="chatInput" placeholder="say something to the group...">
-                <button class="chat-send-btn" onclick="sendChatMessage()">send</button>
+            <div class="modal-label" style="color: var(--vanilla-cream);">live quest chatbox</div>
+            
+            <div id="chatLockedState" class="chat-locked-msg">
+                🔒 join quest to unlock group chat
+            </div>
+
+            <div id="chatActiveState" style="display: none;">
+                <div class="chat-box" id="chatBox"></div>
+                <div class="chat-input-row">
+                    <input type="text" id="chatInput" placeholder="say something to the group...">
+                    <button class="chat-send-btn" onclick="sendChatMessage()">send</button>
+                </div>
             </div>
         </div>
     </div>
@@ -623,6 +642,21 @@
     let otpExpiryTime = null;
     let currentOpenQuestId = null;
     let chatUnsubscribe = null;
+
+    // PROFANITY FILTER DICTIONARY
+    const BANNED_WORDS = [
+        'fuck', 'shit', 'bitch', 'asshole', 'bastard', 'cunt', 'dick', 'pussy', 'whore',
+        'chutiya', 'mc', 'bc', 'gandu', 'bhenchod', 'madarchod', 'gaand', 'lodu', 'choot', 'harami'
+    ];
+
+    function cleanProfanity(text) {
+        let cleaned = text;
+        BANNED_WORDS.forEach(word => {
+            const regex = new RegExp('\\b' + word + '\\b', 'gi');
+            cleaned = cleaned.replace(regex, '****');
+        });
+        return cleaned;
+    }
 
     function isValidChristEmail(email) {
         const christRegex = /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.)?christuniversity\.in$/i;
@@ -709,7 +743,7 @@
         const year = document.getElementById('obYear').value.trim();
         const email = document.getElementById('obEmail').value.trim();
 
-        localStorage.setItem('sq_user_name', name);
+        localStorage.setItem('sq_user_name', cleanProfanity(name));
         localStorage.setItem('sq_user_campus', campus);
         localStorage.setItem('sq_user_year', year);
         localStorage.setItem('sq_user_email', email.toLowerCase());
@@ -804,7 +838,7 @@
         filtered.sort((a, b) => getQuestTimestamp(a) - getQuestTimestamp(b));
 
         if (filtered.length === 0) {
-            feed.innerHTML = `<div style="text-align:center; font-weight:900; padding:40px 10px; font-size:1.2rem;">no sidequests live yet.<br><span style="font-size:0.9rem; font-weight:700;">be the first to drop one above.</span></div>`;
+            feed.innerHTML = `<div style="text-align:center; font-weight:900; padding:40px 10px; font-size:1.2rem; color:var(--midnight-indigo);">no sidequests live yet.<br><span style="font-size:0.9rem; font-weight:700;">be the first to drop one above.</span></div>`;
             return;
         }
 
@@ -823,7 +857,7 @@
                         <span>📍 ${q.loc.split(',')[0]}</span>
                         <span>👤 ${q.host}</span>
                     </div>
-                    <div style="font-size:0.85rem; color:#bbb; margin-bottom:12px;" class="${verified ? '' : 'blurred-text'}">
+                    <div style="font-size:0.85rem; color:#a3aecd; margin-bottom:12px;" class="${verified ? '' : 'blurred-text'}">
                         ${q.deets || 'no extra details provided.'}
                     </div>
                     ${!verified ? `<div class="lock-badge">🔒 verify email to unlock full details & join</div>` : ''}
@@ -853,7 +887,7 @@
 
         const joinBtn = document.getElementById('mJoinBtn');
         joinBtn.innerText = q.joinedByMe ? "you're down ✓ (tap to leave)" : "i'm down";
-        joinBtn.style.background = q.joinedByMe ? "#ffffff" : "var(--brat-green)";
+        joinBtn.style.background = q.joinedByMe ? "var(--white)" : "var(--vanilla-cream)";
         joinBtn.onclick = () => { toggleJoinQuest(q.id); closeModal(); };
 
         const deleteBtn = document.getElementById('mDeleteBtn');
@@ -864,7 +898,20 @@
             deleteBtn.style.display = 'none';
         }
 
-        listenToChat(id);
+        // CHAT UNLOCK LOGIC
+        const chatLocked = document.getElementById('chatLockedState');
+        const chatActive = document.getElementById('chatActiveState');
+
+        if (q.joinedByMe) {
+            chatLocked.style.display = 'none';
+            chatActive.style.display = 'block';
+            listenToChat(id);
+        } else {
+            chatLocked.style.display = 'block';
+            chatActive.style.display = 'none';
+            if (chatUnsubscribe) chatUnsubscribe();
+        }
+
         document.getElementById('detailModal').style.display = 'flex';
     }
 
@@ -892,8 +939,10 @@
 
     async function sendChatMessage() {
         const input = document.getElementById('chatInput');
-        const text = input.value.trim();
+        let text = input.value.trim();
         if (!text || !currentOpenQuestId) return;
+
+        text = cleanProfanity(text);
 
         const name = localStorage.getItem('sq_user_name') || 'anonymous';
         const year = localStorage.getItem('sq_user_year') || '';
@@ -939,12 +988,12 @@
     async function createQuest() {
         if (!requireOnboarding()) return;
 
-        const hostInput = document.getElementById('questHost').value.trim();
-        const title = document.getElementById('questTitle').value.trim();
-        const loc = document.getElementById('questLoc').value.trim();
+        const hostInput = cleanProfanity(document.getElementById('questHost').value.trim());
+        const title = cleanProfanity(document.getElementById('questTitle').value.trim());
+        const loc = cleanProfanity(document.getElementById('questLoc').value.trim());
         const dateInput = document.getElementById('questDate').value;
         const timeInput = document.getElementById('questTime').value;
-        const deets = document.getElementById('questDeets').value.trim();
+        const deets = cleanProfanity(document.getElementById('questDeets').value.trim());
         const cat = document.getElementById('questCat').value;
 
         if (!hostInput || !title || !loc || !dateInput || !timeInput) {
@@ -1024,7 +1073,6 @@
         };
 
         try {
-            // Sends email alert to host via EmailJS template
             await emailjs.send('service_agl6yxs', 'YOUR_TEMPLATE_ID_HERE', alertParams);
         } catch (err) {
             console.error("Host notification failed:", err);
@@ -1047,7 +1095,6 @@
                     joinedUsers: firebase.firestore.FieldValue.arrayUnion(myUserId),
                     joinedCount: firebase.firestore.FieldValue.increment(1)
                 });
-                // Send details of joining user to the quest host
                 sendJoinNotificationToHost(quest);
             }
         } catch (err) {
