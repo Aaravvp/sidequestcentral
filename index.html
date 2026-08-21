@@ -1377,6 +1377,8 @@
             document.getElementById('questFeed').style.display = 'none';
             document.getElementById('feedControls').style.display = 'none';
             document.getElementById('questForm').style.display = 'none';
+            
+            // Display container first so dimensions can be calculated
             document.getElementById('mapWrapper').style.display = 'block';
 
             document.getElementById('navFeedBtn').classList.remove('active');
@@ -1419,10 +1421,13 @@
             };
 
             L.control.layers(baseMaps).addTo(leafletMap);
-        } else {
-            setTimeout(() => { leafletMap.invalidateSize(); }, 200);
         }
-        renderMapMarkers();
+
+        // Delay invalidation slightly to allow DOM layout to update properly
+        setTimeout(() => { 
+            leafletMap.invalidateSize(); 
+            renderMapMarkers();
+        }, 100);
     }
 
     async function geocodeLocation(locString) {
