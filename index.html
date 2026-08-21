@@ -558,12 +558,11 @@
             font-size: 0.8rem;
             border-radius: var(--radius-subtle);
             cursor: pointer;
-            margin-top: 8px;
-            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
+            white-space: nowrap;
         }
 
         .btn-snap:hover { background: #e83849; }
@@ -683,6 +682,7 @@
         .chat-footer {
             display: flex;
             gap: 10px;
+            align-items: center;
         }
 
         .chat-footer input {
@@ -700,7 +700,7 @@
             background: var(--card-bg);
             color: var(--text-color);
             border: none;
-            padding: 0 20px;
+            padding: 12px 20px;
             font-weight: 900;
             border-radius: var(--radius-subtle);
             cursor: pointer;
@@ -1037,11 +1037,6 @@
                 <button class="btn-ping" onclick="sendQuickPing('🍕 food arrived! come fast')">food arrived!</button>
                 <button class="btn-ping" onclick="sendQuickPing('⏳ ordering food now')">ordering food</button>
             </div>
-
-            <input type="file" id="snapFileInput" accept="image/*" capture="environment" style="display: none;" onchange="handleSnapUpload(event)">
-            <button class="btn-snap" onclick="document.getElementById('snapFileInput').click()">
-                📷 send view-once instant photo
-            </button>
         </div>
 
         <div class="modal-section" style="margin-top: 15px;">
@@ -1069,6 +1064,8 @@
     <div class="chat-body" id="chatBox"></div>
 
     <div class="chat-footer">
+        <input type="file" id="snapFileInput" accept="image/*" capture="environment" style="display: none;" onchange="handleSnapUpload(event)">
+        <button class="btn-snap" onclick="document.getElementById('snapFileInput').click()">📷 instant</button>
         <input type="text" id="chatInput" placeholder="say something to the group...">
         <button class="chat-send-btn" onclick="sendChatMessage()">send</button>
     </div>
@@ -1139,9 +1136,6 @@
     let currentOpenQuestId = null;
     let chatUnsubscribe = null;
     let activeViewingSnapId = null;
-
-    let pingQueue = [];
-    let pingTimer = null;
 
     const BANNED_WORDS = [
         'fuck', 'shit', 'bitch', 'asshole', 'bastard', 'cunt', 'dick', 'pussy', 'whore', 'slut',
@@ -1666,31 +1660,9 @@
             await questsRef.doc(currentOpenQuestId).update({
                 latestPing: formattedPing
             });
-
-            pingQueue.push(cleanMsg);
-
-            if (pingTimer) clearTimeout(pingTimer);
-            pingTimer = setTimeout(flushPingQueueToChat, 5000);
-
         } catch (err) {
             alert('failed to send status update.');
         }
-    }
-
-    async function flushPingQueueToChat() {
-        if (pingQueue.length === 0 || !currentOpenQuestId) return;
-
-        let combinedMessage = "";
-        if (pingQueue.length === 1) {
-            combinedMessage = `⚡ status update: ${pingQueue[0]}`;
-        } else {
-            combinedMessage = `⚡ status updates:\n` + pingQueue.map(p => `• ${p}`).join('\n');
-        }
-
-        pingQueue = [];
-        pingTimer = null;
-
-        await sendChatMessageText(combinedMessage);
     }
 
     function sendCustomPing() {
@@ -1741,7 +1713,6 @@
                 senderId: myUserId,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
-            sendQuickPing(`📷 dropped a view-once instant snap!`);
         } catch (err) {
             alert('failed to send photo instant.');
         }
