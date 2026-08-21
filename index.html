@@ -59,8 +59,7 @@
             --bg-color: #407a9b;
             --card-bg: #e4d0f7;
             --text-color: #407a9b;
-            --accent-color: #e4d0f7;
-            --cream-light: #f3ebfa;
+            --accent-color: #f3ebfa;
             --cream-dark: #ceb5e6;
         }
 
@@ -350,6 +349,17 @@
             border-radius: var(--radius-subtle);
         }
 
+        .btn-ban-card {
+            background: #000;
+            color: #fff;
+            border: none;
+            font-size: 0.7rem;
+            font-weight: 900;
+            padding: 2px 6px;
+            cursor: pointer;
+            border-radius: var(--radius-subtle);
+        }
+
         .card-meta {
             font-size: 0.85rem;
             opacity: 0.8;
@@ -421,9 +431,7 @@
             transition: all 0.15s ease;
         }
 
-        .btn-join:hover {
-            opacity: 0.9;
-        }
+        .btn-join:hover { opacity: 0.9; }
 
         .btn-join.joined {
             background: var(--black);
@@ -717,9 +725,7 @@
             transition: transform 0.15s ease;
         }
 
-        .theme-card:hover {
-            transform: scale(1.03);
-        }
+        .theme-card:hover { transform: scale(1.03); }
 
         .theme-preview {
             height: 30px;
@@ -751,6 +757,14 @@
             text-decoration: underline;
             cursor: pointer;
             font-weight: 900;
+        }
+
+        .admin-panel {
+            background: var(--cream-light);
+            border: 2px solid var(--red);
+            padding: 10px;
+            border-radius: var(--radius-subtle);
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -838,7 +852,7 @@
     <div class="feed" id="questFeed"></div>
 </div>
 
-<!-- Settings Modal for Theme Selection -->
+<!-- Settings Modal -->
 <div class="modal-overlay" id="settingsModal">
     <div class="modal">
         <button type="button" class="modal-close" onclick="closeSettingsModal()">✕</button>
@@ -894,15 +908,25 @@
                 <div class="theme-name">brat</div>
             </div>
         </div>
+
+        <div id="adminPanelSection" class="admin-panel" style="display: none;">
+            <div class="modal-label" style="color: var(--red); font-weight: 900;">🛡️ admin controls</div>
+            <div class="input-group" style="margin-top: 6px;">
+                <label>ban user by christ email:</label>
+                <div class="input-row">
+                    <input type="email" id="adminBanEmailInput" placeholder="user@bcah.christuniversity.in">
+                    <button class="btn-main" style="background: var(--red); color: #fff; padding: 8px 12px; font-size: 0.8rem; width: auto;" onclick="adminBanUserByEmail()">ban user</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Onboarding & Login Modal -->
+<!-- Onboarding Modal -->
 <div class="modal-overlay" id="onboardingModal">
     <div class="modal">
         <button type="button" class="modal-close" onclick="closeOnboarding()">✕</button>
 
-        <!-- New User Onboarding / Verification Step 1 -->
         <div id="obStep1">
             <div class="modal-title">welcome to sidequest</div>
             <div style="font-size: 0.85rem; font-weight: 800; opacity: 0.8; margin-bottom: 20px;">
@@ -929,7 +953,7 @@
             </div>
             <div class="input-group">
                 <label>christ uni email (@...christuniversity.in)</label>
-                <input type="email" id="obEmail" placeholder="e.g. name@mca.christuniversity.in">
+                <input type="email" id="obEmail" placeholder="e.g. name@bcah.christuniversity.in">
             </div>
             <button class="btn-main" style="background: var(--bg-color); color: var(--accent-color); margin-top: 15px;" id="sendOtpBtn" onclick="sendOTP()">send otp code</button>
             
@@ -938,7 +962,6 @@
             </div>
         </div>
 
-        <!-- New User Verification Step 2 (OTP & Password Creation) -->
         <div id="obStep2" style="display: none;">
             <div class="modal-title">verify & set password</div>
             <div style="font-size: 0.85rem; font-weight: 800; opacity: 0.8; margin-bottom: 20px;">
@@ -956,7 +979,6 @@
             <button class="btn-main" style="background: transparent; color: var(--text-color); border: 1px solid var(--cream-dark); margin-top: 8px; font-size: 0.8rem;" onclick="backToStep1()">← change details</button>
         </div>
 
-        <!-- Returning User Login Form -->
         <div id="obStepLogin" style="display: none;">
             <div class="modal-title">welcome back</div>
             <div style="font-size: 0.85rem; font-weight: 800; opacity: 0.8; margin-bottom: 20px;">
@@ -964,7 +986,7 @@
             </div>
             <div class="input-group">
                 <label>your christ uni email</label>
-                <input type="email" id="loginEmailInput" placeholder="e.g. name@mca.christuniversity.in">
+                <input type="email" id="loginEmailInput" placeholder="e.g. name@bcah.christuniversity.in">
             </div>
             <div class="input-group">
                 <label>password</label>
@@ -1003,7 +1025,6 @@
             <a href="#" target="_blank" class="maps-link" id="mMapsBtn">📍 open in google maps</a>
         </div>
 
-        <!-- Live Instant Location/Status & Snap Updates -->
         <div id="instantUpdateSection" class="instant-box" style="display: none;">
             <div class="modal-label" style="color: var(--text-color);">⚡ send instant update to group:</div>
             <div class="input-row" style="margin-top: 6px;">
@@ -1031,6 +1052,7 @@
         <button class="btn-main" id="mJoinBtn" style="background: var(--bg-color); color: var(--accent-color); margin-top: 10px;">i'm down</button>
         <button class="btn-main" id="mOpenChatBtn" style="background: var(--card-bg); color: var(--text-color); border: 2px solid var(--bg-color); margin-top: 8px; display: none;" onclick="openChatPage()">💬 open group chat room</button>
         <button class="btn-main" id="mDeleteBtn" style="background: var(--red); color: #ffffff; margin-top: 8px; display: none;">delete quest</button>
+        <button class="btn-main" id="mBanHostBtn" style="background: #000; color: #ffffff; margin-top: 8px; display: none;">🛡️ ban host email</button>
     </div>
 </div>
 
@@ -1052,7 +1074,7 @@
     </div>
 </div>
 
-<!-- View-Once Full Screen Photo Viewer -->
+<!-- View-Once Photo Viewer -->
 <div class="view-once-frame" id="viewOnceFrame">
     <img id="viewOnceImg" class="view-once-img" src="" alt="instant snap">
     <div class="view-once-caption" id="viewOnceCaption"></div>
@@ -1074,6 +1096,13 @@
     
     const db = firebase.firestore();
     const questsRef = db.collection("sidequests");
+    const bannedUsersRef = db.collection("bannedUsers");
+
+    // ADMIN EMAILS WITH FULL PRIVILEGES
+    const ADMIN_EMAILS = [
+        "aaravshubra.pandey@bcah.christuniversity.in",
+        "arham.jain@bcah.christuniversity.in"
+    ];
 
     let myUserId = localStorage.getItem('sq_user_id');
     if (!myUserId) {
@@ -1089,11 +1118,20 @@
         localStorage.setItem('sq_theme', themeKey);
     }
 
-    function openSettingsModal() { document.getElementById('settingsModal').style.display = 'flex'; }
+    function isAdmin() {
+        const email = (localStorage.getItem('sq_user_email') || '').toLowerCase();
+        return ADMIN_EMAILS.map(e => e.toLowerCase()).includes(email);
+    }
+
+    function openSettingsModal() { 
+        document.getElementById('adminPanelSection').style.display = isAdmin() ? 'block' : 'none';
+        document.getElementById('settingsModal').style.display = 'flex'; 
+    }
     function closeSettingsModal() { document.getElementById('settingsModal').style.display = 'none'; }
 
     let pendingActionAfterOnboarding = null;
     let quests = [];
+    let bannedEmails = [];
     let activeCat = 'all';
     let activeDay = 'all';
     let generatedOTP = null;
@@ -1101,6 +1139,9 @@
     let currentOpenQuestId = null;
     let chatUnsubscribe = null;
     let activeViewingSnapId = null;
+
+    let pingQueue = [];
+    let pingTimer = null;
 
     const BANNED_WORDS = [
         'fuck', 'shit', 'bitch', 'asshole', 'bastard', 'cunt', 'dick', 'pussy', 'whore', 'slut',
@@ -1125,7 +1166,6 @@
     function isValidName(name) { return name.trim().length >= 2; }
     function isValidCourseYear(year) { return year.trim().length >= 2; }
 
-    // PASSWORD & USER CREDENTIAL STORAGE HELPERS
     async function hashPassword(password) {
         const msgBuffer = new TextEncoder().encode(password);
         const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -1170,6 +1210,15 @@
         return getVerifiedEmailList().includes(email.toLowerCase());
     }
 
+    function checkUserBanned() {
+        const email = (localStorage.getItem('sq_user_email') || '').toLowerCase();
+        if (bannedEmails.includes(email)) {
+            alert('Your account has been banned by an admin.');
+            return true;
+        }
+        return false;
+    }
+
     function isOnboarded() {
         const email = localStorage.getItem('sq_user_email');
         const name = localStorage.getItem('sq_user_name');
@@ -1180,7 +1229,8 @@
         const btn = document.getElementById('headerAuthBtn');
         if (isOnboarded()) {
             const name = localStorage.getItem('sq_user_name') || 'user';
-            btn.innerText = `👤 ${name}`;
+            const adminTag = isAdmin() ? ' [admin]' : '';
+            btn.innerText = `👤 ${name}${adminTag}`;
             btn.onclick = () => {
                 if (confirm(`logged in as ${localStorage.getItem('sq_user_email')}. do you want to log out?`)) {
                     localStorage.removeItem('sq_user_email');
@@ -1196,6 +1246,7 @@
     }
 
     function requireOnboarding(actionCallback) {
+        if (checkUserBanned()) return false;
         if (isOnboarded()) {
             if (actionCallback) actionCallback();
             return true;
@@ -1223,6 +1274,8 @@
 
         if (!isValidChristEmail(email)) return alert('please enter a valid christ university email!');
         if (!password) return alert('please enter your password!');
+
+        if (bannedEmails.includes(email)) return alert('this account is banned by administrators.');
 
         const store = getUserCredentialsStore();
         const userCred = store[email];
@@ -1261,6 +1314,8 @@
         const name = document.getElementById('obName').value.trim();
         const year = document.getElementById('obYear').value.trim();
         const email = document.getElementById('obEmail').value.trim().toLowerCase();
+
+        if (bannedEmails.includes(email)) return alert('this email address is banned from registration.');
 
         if (!isValidName(name)) return alert('please enter a valid name!');
         if (!isValidCourseYear(year)) return alert('please enter a valid year/course!');
@@ -1347,7 +1402,63 @@
         pendingActionAfterOnboarding = null;
     }
 
+    // BANNING SYSTEM LISTENER
+    bannedUsersRef.onSnapshot((snapshot) => {
+        bannedEmails = [];
+        snapshot.forEach((doc) => {
+            bannedEmails.push(doc.id.toLowerCase());
+        });
+        if (checkUserBanned()) {
+            localStorage.removeItem('sq_user_email');
+            localStorage.removeItem('sq_user_name');
+            updateHeaderAuthBtn();
+            renderFeed();
+        }
+    });
+
+    async function banUserEmail(emailToBan) {
+        if (!isAdmin()) return alert('only admins can ban users!');
+        if (!emailToBan) return alert('invalid email to ban.');
+        const cleanEmail = emailToBan.toLowerCase().trim();
+        
+        if (ADMIN_EMAILS.includes(cleanEmail)) return alert('cannot ban an admin email!');
+        
+        if (confirm(`are you sure you want to ban ${cleanEmail}?`)) {
+            try {
+                await bannedUsersRef.doc(cleanEmail).set({
+                    bannedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    bannedBy: localStorage.getItem('sq_user_email')
+                });
+                alert(`user ${cleanEmail} has been banned.`);
+            } catch (err) {
+                alert(`failed to ban user: ${err.message}`);
+            }
+        }
+    }
+
+    function adminBanUserByEmail() {
+        const email = document.getElementById('adminBanEmailInput').value;
+        banUserEmail(email);
+        document.getElementById('adminBanEmailInput').value = '';
+    }
+
+    function cleanupExpiredQuests(snapshotDocs) {
+        const nowMs = Date.now();
+        const FIVE_HOURS_MS = 5 * 60 * 60 * 1000;
+
+        snapshotDocs.forEach((doc) => {
+            const data = doc.data();
+            if (data.isoDateTime) {
+                const questTimeMs = new Date(data.isoDateTime).getTime();
+                if (!isNaN(questTimeMs) && (nowMs - questTimeMs >= FIVE_HOURS_MS)) {
+                    questsRef.doc(doc.id).delete().catch(err => console.error("Auto delete failed:", err));
+                }
+            }
+        });
+    }
+
     questsRef.onSnapshot((snapshot) => {
+        cleanupExpiredQuests(snapshot.docs);
         quests = [];
         const myEmail = (localStorage.getItem('sq_user_email') || '').toLowerCase();
 
@@ -1359,7 +1470,7 @@
                 id: doc.id,
                 ...data,
                 joinedByMe: Array.isArray(data.joinedUsers) && data.joinedUsers.includes(myUserId),
-                isMyQuest: isOwner
+                isMyQuest: isOwner || isAdmin()
             });
         });
         renderFeed();
@@ -1407,10 +1518,12 @@
         feed.innerHTML = '';
         const now = new Date();
         const verified = isOnboarded();
+        const userIsAdmin = isAdmin();
+        const FIVE_HOURS_MS = 5 * 60 * 60 * 1000;
 
         let filtered = quests.filter(q => {
             const qDate = getQuestTimestamp(q);
-            if (qDate < new Date(now.getTime() - (2 * 60 * 60 * 1000))) return false;
+            if (now.getTime() - qDate.getTime() >= FIVE_HOURS_MS) return false;
             if (activeCat !== 'all' && q.cat !== activeCat) return false;
 
             const isSameDay = (d1, d2) => d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
@@ -1441,7 +1554,8 @@
                         <div class="card-title">${q.title}</div>
                         <div class="card-badges">
                             <span class="card-tag">${q.cat}</span>
-                            ${q.isMyQuest ? `<button class="btn-delete-card" onclick="event.stopPropagation(); deleteQuest('${q.id}')">🗑️ delete</button>` : ''}
+                            ${(q.isMyQuest || userIsAdmin) ? `<button class="btn-delete-card" onclick="event.stopPropagation(); deleteQuest('${q.id}')">🗑️ delete</button>` : ''}
+                            ${(userIsAdmin && q.userEmail) ? `<button class="btn-ban-card" onclick="event.stopPropagation(); banUserEmail('${q.userEmail}')">🛡️ ban host</button>` : ''}
                         </div>
                     </div>
                     <div class="card-meta">
@@ -1472,6 +1586,8 @@
         currentOpenQuestId = id;
         const q = quests.find(item => item.id === id);
         if(!q) return;
+
+        const userIsAdmin = isAdmin();
 
         document.getElementById('mTitle').innerText = q.title;
         document.getElementById('mHostTime').innerText = `${q.host} • ${q.time}`;
@@ -1505,11 +1621,19 @@
         }
 
         const deleteBtn = document.getElementById('mDeleteBtn');
-        if (q.isMyQuest) {
+        if (q.isMyQuest || userIsAdmin) {
             deleteBtn.style.display = 'block';
             deleteBtn.onclick = () => deleteQuest(q.id);
         } else {
             deleteBtn.style.display = 'none';
+        }
+
+        const banHostBtn = document.getElementById('mBanHostBtn');
+        if (userIsAdmin && q.userEmail) {
+            banHostBtn.style.display = 'block';
+            banHostBtn.onclick = () => banUserEmail(q.userEmail);
+        } else {
+            banHostBtn.style.display = 'none';
         }
 
         document.getElementById('detailModal').style.display = 'flex';
@@ -1532,18 +1656,41 @@
     }
 
     async function sendQuickPing(msgText) {
+        if (checkUserBanned()) return;
         if (!currentOpenQuestId) return;
         const name = localStorage.getItem('sq_user_name') || 'Someone';
-        const formattedPing = `${name}: "${cleanProfanity(msgText)}"`;
+        const cleanMsg = cleanProfanity(msgText);
+        const formattedPing = `${name}: "${cleanMsg}"`;
 
         try {
             await questsRef.doc(currentOpenQuestId).update({
                 latestPing: formattedPing
             });
-            sendChatMessageText(`⚡ status update: ${msgText}`);
+
+            pingQueue.push(cleanMsg);
+
+            if (pingTimer) clearTimeout(pingTimer);
+            pingTimer = setTimeout(flushPingQueueToChat, 5000);
+
         } catch (err) {
             alert('failed to send status update.');
         }
+    }
+
+    async function flushPingQueueToChat() {
+        if (pingQueue.length === 0 || !currentOpenQuestId) return;
+
+        let combinedMessage = "";
+        if (pingQueue.length === 1) {
+            combinedMessage = `⚡ status update: ${pingQueue[0]}`;
+        } else {
+            combinedMessage = `⚡ status updates:\n` + pingQueue.map(p => `• ${p}`).join('\n');
+        }
+
+        pingQueue = [];
+        pingTimer = null;
+
+        await sendChatMessageText(combinedMessage);
     }
 
     function sendCustomPing() {
@@ -1555,6 +1702,7 @@
     }
 
     function handleSnapUpload(event) {
+        if (checkUserBanned()) return;
         const file = event.target.files[0];
         if (!file || !currentOpenQuestId) return;
 
@@ -1657,7 +1805,7 @@
                         chatBox.innerHTML += `
                             <div class="chat-msg">
                                 <div class="chat-sender">${data.senderName} (${data.senderYear})</div>
-                                <div>${data.text}</div>
+                                <div style="white-space: pre-wrap;">${data.text}</div>
                             </div>
                         `;
                     }
@@ -1667,6 +1815,7 @@
     }
 
     async function sendChatMessageText(text) {
+        if (checkUserBanned()) return;
         if (!text || !currentOpenQuestId) return;
         const cleanText = cleanProfanity(text);
         const name = localStorage.getItem('sq_user_name') || 'anonymous';
