@@ -1031,15 +1031,15 @@
     </style>
 </head>
 <body>
-    <!-- Snappier Zoom Splash Screen -->
+<!-- Ultra-Smooth GPU-Accelerated Splash Screen -->
 <div id="splash-screen">
   <div id="splash-text">
-    <span>S</span>
-    <span class="fill-text">IDE</span>
-    <span>Q</span>
-    <span class="fill-text">UEST&nbsp;</span>
-    <span>C</span>
-    <span class="fill-text">ENTRAL</span>
+    <span class="static-letter">S</span>
+    <div class="expand-wrapper"><span class="inner-text">IDE</span></div>
+    <span class="static-letter">Q</span>
+    <div class="expand-wrapper"><span class="inner-text">UEST&nbsp;</span></div>
+    <span class="static-letter">C</span>
+    <div class="expand-wrapper"><span class="inner-text">ENTRAL</span></div>
   </div>
 </div>
 
@@ -1056,9 +1056,10 @@
     z-index: 999999;
     overflow: hidden;
     will-change: opacity;
+    /* Force GPU composition */
+    transform: translate3d(0, 0, 0);
   }
 
-  /* Total duration trimmed to 2.8s for a faster overall flow */
   #splash-text {
     display: flex;
     align-items: center;
@@ -1067,76 +1068,94 @@
     font-weight: 900;
     color: #ffffff;
     text-transform: uppercase;
-    letter-spacing: 2px;
     white-space: nowrap;
-    will-change: transform, opacity, filter;
-    animation: continuousMotion 2.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: transform, opacity;
+    /* High-FPS continuous fluid transform */
+    animation: masterScale 3.2s cubic-bezier(0.12, 0, 0.39, 0) forwards;
   }
 
-  /* Word forms across 1.4s */
-  .fill-text {
+  .static-letter {
     display: inline-block;
-    max-width: 0;
-    opacity: 0;
-    overflow: hidden;
-    filter: blur(8px);
-    will-change: max-width, opacity, filter;
-    animation: continuousExpansion 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+    flex-shrink: 0;
   }
 
-  @keyframes continuousExpansion {
+  /* Flex slot wrapper eliminates pixel-snapping layout jumps */
+  .expand-wrapper {
+    display: inline-grid;
+    grid-template-columns: 0fr;
+    opacity: 0;
+    transition: grid-template-columns 1.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+    will-change: grid-template-columns, opacity;
+    animation: slotExpand 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
+  }
+
+  .inner-text {
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+    filter: blur(8px);
+    will-change: filter;
+    animation: blurOut 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
+  }
+
+  /* Fluid Grid Expansion */
+  @keyframes slotExpand {
     0% {
-      max-width: 0;
+      grid-template-columns: 0fr;
       opacity: 0;
-      filter: blur(8px);
     }
-    35% {
-      opacity: 0.5;
+    30% {
+      opacity: 1;
     }
     100% {
-      max-width: 280px;
+      grid-template-columns: 1fr;
       opacity: 1;
+    }
+  }
+
+  /* Smooth Blur Dissolve */
+  @keyframes blurOut {
+    0% {
+      filter: blur(8px);
+    }
+    100% {
       filter: blur(0px);
     }
   }
 
-  /* Immediate shift from word formation into zoom out */
-  @keyframes continuousMotion {
+  /* Unified camera zoom sequence */
+  @keyframes masterScale {
     0% {
-      transform: scale(0.85);
+      transform: scale3d(0.9, 0.9, 1);
       opacity: 0;
-      filter: blur(4px);
+      letter-spacing: 1px;
     }
     15% {
       opacity: 1;
-      filter: blur(0px);
     }
-    /* Word finishes forming right around 55% (~1.5s in), zoom starts immediately */
     55% {
-      transform: scale(1.02);
+      transform: scale3d(1.02, 1.02, 1);
       opacity: 1;
-      letter-spacing: 3px;
-      filter: blur(0px);
+      letter-spacing: 2px;
     }
     100% {
-      transform: scale(3.8);
+      transform: scale3d(3.8, 3.8, 1);
       opacity: 0;
-      letter-spacing: 14px;
-      filter: blur(16px);
+      letter-spacing: 10px;
     }
   }
 </style>
 
 <script>
-  // Clean DOM teardown at 2.7s
+  // Clean DOM teardown at 3.1s
   setTimeout(() => {
     const splash = document.getElementById('splash-screen');
     if (splash) {
-      splash.style.transition = 'opacity 0.3s ease';
+      splash.style.transition = 'opacity 0.4s ease';
       splash.style.opacity = '0';
-      setTimeout(() => splash.remove(), 300);
+      setTimeout(() => splash.remove(), 400);
     }
-  }, 2700);
+  }, 3100);
 </script>
 
 <div class="app-container">
