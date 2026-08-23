@@ -1050,21 +1050,27 @@
 </div>
 
 <style>
-  #splash-screen {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #0d0f12;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999999;
-    overflow: hidden;
-    will-change: opacity;
-    /* Force GPU composition */
-    transform: translate3d(0, 0, 0);
-  }
+ #splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  /* Covers notched screens / status bars */
+  height: -webkit-fill-available; 
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  background-color: #0d0f12;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999999;
+  overflow: hidden;
+  will-change: opacity;
+  transform: translate3d(0, 0, 0);
+} 
+
 
   #splash-text {
     display: flex;
