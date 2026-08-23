@@ -1,8 +1,8 @@
 [{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "io.github.aaravvp.twa",
-    "sha256_cert_fingerprints": ["14:6D:E9:1F:B5:C8:CE:50:2A:CD:A1:7F:43:24:D9:63:F1:C8:CD:94:1E:58:34:6C:5F:86:EC:65:29:43:EC:2B"]
-  }
-}]
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.vercel.sidequestcentral.twa",
+        "sha256_cert_fingerprints": ["A4:0C:A0:9E:5B:E1:A6:43:CE:07:95:AA:24:78:34:00:A3:92:5F:62:18:F5:AD:F4:CE:8A:76:FA:B6:CD:54:0D"]
+      }
+    }]
