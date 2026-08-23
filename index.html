@@ -1031,6 +1031,113 @@
     </style>
 </head>
 <body>
+    <!-- Snappier Zoom Splash Screen -->
+<div id="splash-screen">
+  <div id="splash-text">
+    <span>S</span>
+    <span class="fill-text">IDE</span>
+    <span>Q</span>
+    <span class="fill-text">UEST&nbsp;</span>
+    <span>C</span>
+    <span class="fill-text">ENTRAL</span>
+  </div>
+</div>
+
+<style>
+  #splash-screen {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0d0f12;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999;
+    overflow: hidden;
+    will-change: opacity;
+  }
+
+  /* Total duration trimmed to 2.8s for a faster overall flow */
+  #splash-text {
+    display: flex;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    will-change: transform, opacity, filter;
+    animation: continuousMotion 2.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Word forms across 1.4s */
+  .fill-text {
+    display: inline-block;
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    filter: blur(8px);
+    will-change: max-width, opacity, filter;
+    animation: continuousExpansion 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  }
+
+  @keyframes continuousExpansion {
+    0% {
+      max-width: 0;
+      opacity: 0;
+      filter: blur(8px);
+    }
+    35% {
+      opacity: 0.5;
+    }
+    100% {
+      max-width: 280px;
+      opacity: 1;
+      filter: blur(0px);
+    }
+  }
+
+  /* Immediate shift from word formation into zoom out */
+  @keyframes continuousMotion {
+    0% {
+      transform: scale(0.85);
+      opacity: 0;
+      filter: blur(4px);
+    }
+    15% {
+      opacity: 1;
+      filter: blur(0px);
+    }
+    /* Word finishes forming right around 55% (~1.5s in), zoom starts immediately */
+    55% {
+      transform: scale(1.02);
+      opacity: 1;
+      letter-spacing: 3px;
+      filter: blur(0px);
+    }
+    100% {
+      transform: scale(3.8);
+      opacity: 0;
+      letter-spacing: 14px;
+      filter: blur(16px);
+    }
+  }
+</style>
+
+<script>
+  // Clean DOM teardown at 2.7s
+  setTimeout(() => {
+    const splash = document.getElementById('splash-screen');
+    if (splash) {
+      splash.style.transition = 'opacity 0.3s ease';
+      splash.style.opacity = '0';
+      setTimeout(() => splash.remove(), 300);
+    }
+  }, 2700);
+</script>
 
 <div class="app-container">
     <header>
