@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Fullscreen / Standalone Mode Fixes -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0d0f12">
-    <link rel="manifest" href="manifest.json">
-    <link rel="manifest" href="manifest.json">
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('firebase-messaging-sw.js');
-  }
-</script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0d0f12">
     <title>sidequest central</title>
+    
+    <link rel="manifest" href="manifest.json">
+    
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('firebase-messaging-sw.js');
+      }
+    </script>
+
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
+    
     <!-- Leaflet CSS & JS for Map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<style>
+
+    <style>
         :root {
             --bg-color: #212842;
             --card-bg: #F0E7D5;
@@ -70,6 +72,7 @@
             --card-bg: #e4d0f7;
             --text-color: #407a9b;
             --accent-color: #f3ebfa;
+            --cream-light: #f3ebfa;
             --cream-dark: #ceb5e6;
         }
 
@@ -1030,7 +1033,7 @@
     </style>
 </head>
 <body>
-<!-- Ultra-Smooth GPU-Accelerated Splash Screen -->
+<!-- Splash Screen -->
 <div id="splash-screen">
   <div id="splash-text">
     <span class="static-letter">S</span>
@@ -1051,7 +1054,6 @@
   bottom: 0;
   width: 100vw;
   height: 100vh;
-  /* Covers notched screens / status bars */
   height: -webkit-fill-available; 
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   background-color: #0d0f12;
@@ -1064,7 +1066,6 @@
   transform: translate3d(0, 0, 0);
 } 
 
-
   #splash-text {
     display: flex;
     align-items: center;
@@ -1075,7 +1076,6 @@
     text-transform: uppercase;
     white-space: nowrap;
     will-change: transform, opacity;
-    /* High-FPS continuous fluid transform */
     animation: masterScale 3.2s cubic-bezier(0.12, 0, 0.39, 0) forwards;
   }
 
@@ -1084,7 +1084,6 @@
     flex-shrink: 0;
   }
 
-  /* Flex slot wrapper eliminates pixel-snapping layout jumps */
   .expand-wrapper {
     display: inline-grid;
     grid-template-columns: 0fr;
@@ -1103,56 +1102,26 @@
     animation: blurOut 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
   }
 
-  /* Fluid Grid Expansion */
   @keyframes slotExpand {
-    0% {
-      grid-template-columns: 0fr;
-      opacity: 0;
-    }
-    30% {
-      opacity: 1;
-    }
-    100% {
-      grid-template-columns: 1fr;
-      opacity: 1;
-    }
+    0% { grid-template-columns: 0fr; opacity: 0; }
+    30% { opacity: 1; }
+    100% { grid-template-columns: 1fr; opacity: 1; }
   }
 
-  /* Smooth Blur Dissolve */
   @keyframes blurOut {
-    0% {
-      filter: blur(8px);
-    }
-    100% {
-      filter: blur(0px);
-    }
+    0% { filter: blur(8px); }
+    100% { filter: blur(0px); }
   }
 
-  /* Unified camera zoom sequence */
   @keyframes masterScale {
-    0% {
-      transform: scale3d(0.9, 0.9, 1);
-      opacity: 0;
-      letter-spacing: 1px;
-    }
-    15% {
-      opacity: 1;
-    }
-    55% {
-      transform: scale3d(1.02, 1.02, 1);
-      opacity: 1;
-      letter-spacing: 2px;
-    }
-    100% {
-      transform: scale3d(3.8, 3.8, 1);
-      opacity: 0;
-      letter-spacing: 10px;
-    }
+    0% { transform: scale3d(0.9, 0.9, 1); opacity: 0; letter-spacing: 1px; }
+    15% { opacity: 1; }
+    55% { transform: scale3d(1.02, 1.02, 1); opacity: 1; letter-spacing: 2px; }
+    100% { transform: scale3d(3.8, 3.8, 1); opacity: 0; letter-spacing: 10px; }
   }
 </style>
 
 <script>
-  // Clean DOM teardown at 3.1s
   setTimeout(() => {
     const splash = document.getElementById('splash-screen');
     if (splash) {
@@ -1532,7 +1501,7 @@
     </div>
 </div>
 
-<!-- Chat Page Modal (For Quest Groups or Direct Messages) -->
+<!-- Chat Page Modal -->
 <div class="chat-modal-overlay" id="chatPageModal">
     <div class="chat-header">
         <div>
@@ -1547,7 +1516,7 @@
     <div class="chat-footer">
         <input type="file" id="snapFileInput" accept="image/*" capture="environment" style="display: none;" onchange="handleSnapUpload(event)">
         <button class="btn-snap" onclick="document.getElementById('snapFileInput').click()">📷 instant</button>
-        <input type="text" id="chatInput" placeholder="say something...">
+        <input type="text" id="chatInput" placeholder="say something..." onkeydown="if(event.key==='Enter') sendChatMessage()">
         <button class="chat-send-btn" onclick="sendChatMessage()">send</button>
     </div>
 </div>
@@ -1574,7 +1543,7 @@
     
     const db = firebase.firestore();
     const messaging = firebase.messaging();
-    const VAPID_KEY = "BD2yokX1xAHT6XJ45cbZ6x8FeDwibtParcoGvygWb6jft5tjsYmY-A8YwyGF1xY_Z1bGzksv5lkuRpY2uf8NC4E"; // Paste your Firebase Web Push Key Pair here
+    const VAPID_KEY = "BD2yokX1xAHT6XJ45cbZ6x8FeDwibtParcoGvygWb6jft5tjsYmY-A8YwyGF1xY_Z1bGzksv5lkuRpY2uf8NC4E";
 
     const questsRef = db.collection("sidequests");
     const bannedUsersRef = db.collection("bannedUsers");
@@ -1610,7 +1579,7 @@
         if (!('Notification' in window)) return;
         try {
             const permission = await Notification.requestPermission();
-            if (permission === 'granted' && VAPID_KEY !== "BD2yokX1xAHT6XJ45cbZ6x8FeDwibtParcoGvygWb6jft5tjsYmY-A8YwyGF1xY_Z1bGzksv5lkuRpY2uf8NC4E") {
+            if (permission === 'granted' && VAPID_KEY) {
                 const currentToken = await messaging.getToken({ vapidKey: VAPID_KEY });
                 if (currentToken) {
                     const email = (localStorage.getItem('sq_user_email') || '').toLowerCase();
@@ -1671,6 +1640,20 @@
             cleaned = cleaned.replace(regex, '****');
         });
         return cleaned;
+    }
+
+    function setDayFilter(day, btn) {
+        activeDay = day;
+        document.querySelectorAll('.day-chip').forEach(c => c.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        renderFeed();
+    }
+
+    function setCatFilter(cat, btn) {
+        activeCat = cat;
+        document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        renderFeed();
     }
 
     function isValidChristEmail(email) {
@@ -2176,7 +2159,6 @@
         document.getElementById('obStepResetPassword').style.display = 'none';
         document.getElementById('obStepForgotPassword').style.display = 'block';
     }
-
 
     async function backendRequest(endpoint, payload) {
         const response = await fetch(endpoint, {
@@ -2913,73 +2895,44 @@
         } catch (err) { alert(`Failed to sync to database: ${err.message}`); }
     }
 
-    async function deleteQuest(id) {
-        if (!confirm('are you sure you want to delete this sidequest?')) return;
-        try { await questsRef.doc(id).delete(); closeModal(); } catch (err) { alert(`failed to delete: ${err.message}`); }
-    }
+    async function toggleJoinQuest(id) {
+        if (!requireOnboarding()) return;
+        const q = quests.find(item => item.id === id);
+        if (!q) return;
 
-    async function sendJoinNotificationToHost(quest) {
-        if (!quest.userEmail) return;
-
-        const joinerHandle = localStorage.getItem('sq_user_handle') || 'user';
-        const joinerCampus = localStorage.getItem('sq_user_campus') || 'N/A';
-        const joinerEmail = localStorage.getItem('sq_user_email') || 'N/A';
-
+        const questRef = questsRef.doc(id);
         try {
-            await backendRequest('/api/notify-join', {
-                toEmail: quest.userEmail,
-                toName: quest.hostHandle || quest.host,
-                joinerHandle: joinerHandle,
-                joinerCampus: joinerCampus,
-                joinerEmail: joinerEmail,
-                questTitle: quest.title
-            });
-        } catch (err) {
-            console.error('Join notification failed:', err);
-        }
-    }
-
-    async function executeToggleJoin(id) {
-        const quest = quests.find(q => q.id === id);
-        if (!quest) return;
-        const docRef = questsRef.doc(id);
-
-        try {
-            if (quest.joinedByMe) {
-                await docRef.update({
+            if (q.joinedByMe) {
+                await questRef.update({
                     joinedUsers: firebase.firestore.FieldValue.arrayRemove(myUserId),
                     joinedCount: firebase.firestore.FieldValue.increment(-1)
                 });
             } else {
-                await docRef.update({
+                await questRef.update({
                     joinedUsers: firebase.firestore.FieldValue.arrayUnion(myUserId),
                     joinedCount: firebase.firestore.FieldValue.increment(1)
                 });
-                sendJoinNotificationToHost(quest);
             }
-        } catch (err) { alert(`action failed: ${err.message}`); }
+        } catch (err) {
+            alert(`failed to update RSVP: ${err.message}`);
+        }
     }
 
-    async function toggleJoinQuest(id) { requireOnboarding(() => executeToggleJoin(id)); }
-
-    function setCatFilter(cat, btn) {
-        document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
-        btn.classList.add('active'); activeCat = cat; renderFeed();
+    async function deleteQuest(id) {
+        if (!confirm('are you sure you want to delete this sidequest?')) return;
+        try {
+            await questsRef.doc(id).delete();
+            closeModal();
+            alert('quest deleted successfully.');
+        } catch (err) {
+            alert(`failed to delete quest: ${err.message}`);
+        }
     }
 
-    function setDayFilter(day, btn) {
-        document.querySelectorAll('.day-chip').forEach(c => c.classList.remove('active'));
-        btn.classList.add('active'); activeDay = day; renderFeed();
-    }
-
-    window.onclick = function(event) {
-        if (event.target === document.getElementById('detailModal')) closeModal();
-        if (event.target === document.getElementById('settingsModal')) closeSettingsModal();
-        if (event.target === document.getElementById('onboardingModal')) closeOnboarding();
-    }
-
-    updateHeaderAuthBtn();
+    window.addEventListener('DOMContentLoaded', () => {
+        updateHeaderAuthBtn();
+        setDefaultFormDate();
+    });
 </script>
-
 </body>
 </html>
