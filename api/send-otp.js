@@ -29,6 +29,13 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Email is required' });
     }
 
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        console.error('SEND OTP ERROR: EMAIL_USER or EMAIL_PASS is not set in environment variables');
+        return res.status(500).json({
+            error: 'Email server is not configured (missing EMAIL_USER/EMAIL_PASS). Contact the site admin.',
+        });
+    }
+
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = Date.now() + 5 * 60 * 1000;
 
