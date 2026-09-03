@@ -29,10 +29,14 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Email is required' });
     }
 
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-        console.error('SEND OTP ERROR: EMAIL_USER or EMAIL_PASS is not set in environment variables');
+    // Pulls from GMAIL_USER / GMAIL_PASS (your Vercel names) with fallback to EMAIL_USER / EMAIL_PASS
+    const emailUser = process.env.GMAIL_USER || process.env.EMAIL_USER;
+    const emailPass = process.env.GMAIL_PASS || process.env.EMAIL_PASS;
+
+    if (!emailUser || !emailPass) {
+        console.error('SEND OTP ERROR: Email credentials missing in environment variables');
         return res.status(500).json({
-            error: 'Email server is not configured (missing EMAIL_USER/EMAIL_PASS). Contact the site admin.',
+            error: 'Email server is not configured (missing GMAIL_USER/GMAIL_PASS). Contact the site admin.',
         });
     }
 
@@ -45,13 +49,13 @@ export default async function handler(req, res) {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
+                user: emailUser,
+                pass: emailPass,
             },
         });
 
         await transporter.sendMail({
-            from: `"SideQuestCentral" <${process.env.EMAIL_USER}>`,
+            from: `"SideQuestCentral" <${emailUser}>`,
             to: cleanEmail,
             subject: 'Your SideQuestCentral verification code',
             text: `Your SideQuestCentral verification code is ${otp}. This code expires in 5 minutes.`,
