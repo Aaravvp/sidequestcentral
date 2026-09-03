@@ -15,7 +15,8 @@ module.exports = async function handler(req, res) {
         return json(res, 405, { error: "method not allowed" });
     }
 
-    if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        console.error("NOTIFY JOIN ERROR: EMAIL_USER / EMAIL_PASS env vars are missing on the server");
         return json(res, 500, {
             error: "email server settings are missing"
         });
@@ -42,13 +43,13 @@ module.exports = async function handler(req, res) {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: process.env.GMAIL_USER,
-                pass: process.env.GMAIL_APP_PASSWORD
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
             }
         });
 
         await transporter.sendMail({
-            from: `"SideQuestCentral" <${process.env.GMAIL_USER}>`,
+            from: `"SideQuestCentral" <${process.env.EMAIL_USER}>`,
             to: recipient,
             subject: `Someone joined your quest — ${questTitle || "SideQuest"}`,
             text:
